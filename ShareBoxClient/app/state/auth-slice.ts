@@ -6,6 +6,7 @@ export type User = {
   id: string;
   username: string;
   name: string;
+  avatar: string;
 };
 
 const initialState: {user: User | null; token: string | null} = {

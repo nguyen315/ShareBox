@@ -7,4 +7,3 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 user = User.create(username: 'nguyenmho', password: '123123')
-voucher1 = Voucher.create(user_id: 2, code: '86004521JT112B5')
