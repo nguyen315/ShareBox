@@ -7,6 +7,8 @@ import HeaderRight from '../components/header-right';
 import HomeScreen from '../screens/home';
 import NewVoucherScreen from '../screens/new-voucher';
 import VoucherDetail from '../screens/voucher-detail';
+import VoucherRequestDetail from '../screens/voucher-request-detail';
+import MyVoucherScreen from '../screens/my-voucher';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,6 +21,26 @@ const HomeStack = () => {
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Voucher Detail" component={VoucherDetail} />
+      <Stack.Screen
+        name="Voucher Request Detail"
+        component={VoucherRequestDetail}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MyVoucherStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerRight: () => <HeaderRight />,
+      }}>
+      <Stack.Screen name="My Voucher" component={MyVoucherScreen} />
+      <Stack.Screen name="Voucher Detail" component={VoucherDetail} />
+      <Stack.Screen
+        name="Voucher Request Detail"
+        component={VoucherRequestDetail}
+      />
     </Stack.Navigator>
   );
 };
@@ -59,6 +81,26 @@ const BottomTabNavigator = () => {
               />
 
               <Text style={{color: focused ? '#fff' : '#000'}}>Home</Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="My Voucher Stack"
+        component={MyVoucherStack}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View
+              style={{alignItems: 'center', justifyContent: 'center', top: 12}}>
+              <MaterialIcons
+                name="home"
+                size={30}
+                color={focused ? '#fff' : ''}
+              />
+
+              <Text style={{color: focused ? '#fff' : '#000'}}>
+                My Vouchers
+              </Text>
             </View>
           ),
         }}

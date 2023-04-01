@@ -1,23 +1,28 @@
-import {useQuery} from '@tanstack/react-query';
 import React from 'react';
 import {FlatList, SafeAreaView, StyleSheet, Text} from 'react-native';
+import {useQuery} from '@tanstack/react-query';
 import VoucherRequestCard from '../components/voucher-request-card';
 import useRefetchOnFocus from '../hooks/useRefetchOnFocus';
-import {tokenSelector} from '../state/auth-slice';
+import {tokenSelector, userSelector} from '../state/auth-slice';
 import {useAppSelector} from '../state/hook';
 
-const HomeScreen: (props: any) => JSX.Element = ({navigation}: any) => {
+const MyVoucherScreen: (props: any) => JSX.Element = ({navigation}: any) => {
   const token = useAppSelector(tokenSelector);
+  const user = useAppSelector(userSelector);
+  const userId = user?.id;
 
   const {isLoading, isFetching, data, refetch} = useQuery({
     queryKey: ['voucher_request'],
     queryFn: () => {
-      const data = fetch(`http://localhost:3000/api/v1//voucher_requests`, {
-        method: 'GET',
-        headers: {
-          Authorization: `bearer ${token}`,
+      const data = fetch(
+        `http://localhost:3000/api/v1/users/${userId}/voucher_requests`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
         },
-      })
+      )
         .then(response => response.json())
         .then(data => data.voucher_requests);
 
@@ -37,6 +42,8 @@ const HomeScreen: (props: any) => JSX.Element = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={{textAlign: 'center'}}>Your voucher request</Text>
+
       <FlatList
         data={data}
         renderItem={({item}) => (
@@ -70,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default MyVoucherScreen;

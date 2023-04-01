@@ -3,6 +3,7 @@ import {apiSlice} from '../services/api';
 import {RootState} from './store';
 
 export type User = {
+  id: string;
   username: string;
   name: string;
 };

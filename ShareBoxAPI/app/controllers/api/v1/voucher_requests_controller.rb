@@ -2,7 +2,7 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
   before_action :authorized
 
   def index
-    @voucher_requests = VoucherRequest.all
+    @voucher_requests = VoucherRequest.all.order(created_at: :desc)
     render json: {voucher_requests: @voucher_requests}
   end
 
@@ -17,7 +17,18 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
   end
 
   def voucher_request_params
-    puts "#>>>#{params}"
     params.require(:voucher_request).permit(:value, :voucher_type).merge(user_id: @user[:id])
+  end
+
+  def get_voucher_requests_by_user
+    user_id = params[:user_id].to_i
+    puts "user_id: #{user_id} #{@user[:id]}"
+    if user_id != @user[:id]
+      render error: { error: 'unauthorized' }, status: :unauthorized
+    else
+      @voucher_requests = VoucherRequest.where("user_id = ?", user_id).order(created_at: :desc)
+      puts "vouchers: #{@voucher_requests}"
+      render json: {voucher_requests: @voucher_requests}
+    end
   end
 end
