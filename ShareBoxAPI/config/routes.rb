@@ -4,8 +4,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users do
         resources :vouchers
+        resources :voucher_requests
       end
       resources :vouchers
+      resources :voucher_requests
 
       post '/auth/login', to: 'auth#login'
       get '/auth/persist', to: 'auth#persist'

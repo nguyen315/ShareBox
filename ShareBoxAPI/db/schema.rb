@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_05_115425) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_01_060612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_05_115425) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "voucher_requests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.float "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "voucher_type"
+    t.index ["user_id"], name: "index_voucher_requests_on_user_id"
+  end
+
   create_table "vouchers", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "code"
@@ -31,5 +40,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_05_115425) do
     t.index ["user_id"], name: "index_vouchers_on_user_id"
   end
 
+  add_foreign_key "voucher_requests", "users"
   add_foreign_key "vouchers", "users"
 end

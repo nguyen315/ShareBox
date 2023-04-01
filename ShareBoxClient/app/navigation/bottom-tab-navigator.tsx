@@ -64,7 +64,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="New Voucher"
+        name="New Voucher Stack"
         component={NewVoucherStack}
         options={{
           tabBarIcon: ({focused}) => (
@@ -73,10 +73,12 @@ const BottomTabNavigator = () => {
               <MaterialIcons
                 name="star-outline"
                 size={30}
-                color={focused ? '#fff' : ''}
+                color={focused ? '#fff' : '#000'}
               />
 
-              <Text style={{color: focused ? '#fff' : ''}}>New Voucher</Text>
+              <Text style={{color: focused ? '#fff' : '#000'}}>
+                New Voucher
+              </Text>
             </View>
           ),
         }}

@@ -12,7 +12,7 @@ class Api::V1::VouchersController < Api::V1::AuthController
     if @voucher.valid?
       render json: {voucher: @voucher}
     else
-      render error: { error: 'Unable to create user' }, status: 400
+      render error: { error: 'Unable to create voucher' }, status: 400
     end
   end
 
