@@ -19,6 +19,6 @@ class Api::V1::VouchersController < Api::V1::AuthController
   private
 
   def voucher_params
-    params.permit(:code).merge(user_id: @user[:id])
+    params.require(:voucher).permit(:code).merge(user_id: @user[:id])
   end
 end

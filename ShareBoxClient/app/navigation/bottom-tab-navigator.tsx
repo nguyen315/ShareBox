@@ -58,7 +58,7 @@ const BottomTabNavigator = () => {
                 color={focused ? '#fff' : ''}
               />
 
-              <Text style={{color: focused ? '#fff' : ''}}>Home</Text>
+              <Text style={{color: focused ? '#fff' : '#000'}}>Home</Text>
             </View>
           ),
         }}

@@ -13,10 +13,10 @@ const VoucherCard = ({item, navigation}: any) => {
       }}
       onPress={() => navigation.navigate('Voucher Detail', {item})}>
       <View>
-        <Text style={{fontSize: 16}}>Type: {item.type}</Text>
+        <Text style={{fontSize: 16}}>Type: {item.voucher_type}</Text>
         <Text style={{fontSize: 16}}>Value: {item.value}</Text>
-        <Text style={{fontSize: 16}}>Price: {item.value * 0.8}</Text>
-        <Text style={{fontSize: 16}}>Owner: {item.user?.name}</Text>
+        {/* <Text style={{fontSize: 16}}>Price: {item.value * 0.8}</Text>
+        <Text style={{fontSize: 16}}>Owner: {item.user?.name}</Text> */}
       </View>
     </TouchableOpacity>
   );
