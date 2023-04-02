@@ -1,10 +1,12 @@
 import {useMutation} from '@tanstack/react-query';
 import React, {useState} from 'react';
 import {
+  Keyboard,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import Input from '../components/text-input';
@@ -39,40 +41,42 @@ const NewVoucherScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex: 1, marginHorizontal: 16, marginTop: 32}}>
-        <Input
-          label="Voucher Type"
-          value={voucherType}
-          onChangeText={setVoucherType}
-          style={{marginVertical: 8}}
-        />
-        <Input
-          label="Value"
-          value={value}
-          onChangeText={setValue}
-          style={{marginVertical: 8}}
-        />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{flex: 1, marginHorizontal: 16, marginTop: 32}}>
+          <Input
+            label="Voucher Type"
+            value={voucherType}
+            onChangeText={setVoucherType}
+            style={{marginVertical: 8}}
+          />
+          <Input
+            label="Value"
+            value={value}
+            onChangeText={setValue}
+            style={{marginVertical: 8}}
+          />
 
-        <TouchableOpacity
-          onPress={handleSubmitNewVoucher}
-          style={{
-            padding: 16,
-            marginTop: 24,
-            backgroundColor: '#227C70',
-            borderRadius: 16,
-            marginHorizontal: 16,
-          }}>
-          <Text
+          <TouchableOpacity
+            onPress={handleSubmitNewVoucher}
             style={{
-              fontSize: 20,
-              textAlign: 'center',
-              color: '#fff',
-              fontWeight: '600',
+              padding: 16,
+              marginTop: 24,
+              backgroundColor: '#227C70',
+              borderRadius: 16,
+              marginHorizontal: 16,
             }}>
-            Submit
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text
+              style={{
+                fontSize: 20,
+                textAlign: 'center',
+                color: '#fff',
+                fontWeight: '600',
+              }}>
+              Submit
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };

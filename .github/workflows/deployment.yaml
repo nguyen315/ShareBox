@@ -1,0 +1,27 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+
+env:
+    RAILS_ENV: production
+    REGISTRY: ghcr.io
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build ./ShareBoxAPI --file ./ShareBoxAPI/Dockerfile -t shareboxapi
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2.1.0
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
