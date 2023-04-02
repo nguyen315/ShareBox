@@ -17,7 +17,7 @@ class Api::V1::AuthController < Api::V1::ApplicationController
   end
 
   def encode_token(payload)
-    JWT.encode(payload, 'secret')
+    JWT.encode(payload, ENV["JWT_SECRET"])
   end
 
   def auth_header
@@ -29,7 +29,7 @@ class Api::V1::AuthController < Api::V1::ApplicationController
     if auth_header
       token = auth_header.split(' ').last
       begin
-        JWT.decode(token, 'secret', true, algorithm: 'HS256')
+        JWT.decode(token, ENV["JWT_SECRET"], true, algorithm: 'HS256')
       rescue JWT::DecodeError
         nil
       end

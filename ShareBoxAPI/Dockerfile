@@ -4,11 +4,11 @@ RUN apk add \
   postgresql-dev \
   tzdata \
   nodejs
-
+ENV RAILS_ENV production
 WORKDIR /app
 COPY Gemfile* .
 RUN bundle install
 COPY . .
 EXPOSE 3000
 
-CMD ["rails", "server", "-e", "production"]
+CMD ["rails", "server"]
