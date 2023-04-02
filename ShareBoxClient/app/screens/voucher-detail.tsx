@@ -1,36 +1,48 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
-  const {item} = route.params;
-
-  const copyVoucherCode = () => {
-    Clipboard.setString(item.code.toString());
-  };
+  const {voucher} = route.params;
 
   return (
     <View style={styles.container}>
-      <View style={[styles.flexRow]}>
-        <Text style={{fontSize: 16, marginRight: 40}}>Type</Text>
-        <Text style={{fontSize: 16}}>{item.type}</Text>
+      <View>
+        <View style={[styles.flexRow]}>
+          <Text style={{fontSize: 18}}>Type</Text>
+          <Text style={{fontSize: 18}}>{voucher.voucher_type}</Text>
+        </View>
+        <View style={[styles.flexRow]}>
+          <Text style={{fontSize: 18}}>Value</Text>
+          <Text style={{fontSize: 18}}>{voucher.value}</Text>
+        </View>
+        <View style={[styles.flexRow]}>
+          <Text style={{fontSize: 18}}>Price</Text>
+          <Text style={{fontSize: 18}}>{voucher.value * 0.6}</Text>
+        </View>
       </View>
 
-      <TouchableOpacity
-        style={[{marginVertical: 10, alignItems: 'center'}, styles.flexRow]}
-        onPress={copyVoucherCode}>
-        <View>
-          <Text style={{fontSize: 20}}>Voucher Code</Text>
-          <Text style={{fontSize: 20}}>{item.code}</Text>
-        </View>
-        <MaterialIcons name="content-copy" size={30} color="black" />
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{marginVertical: 10}} onPress={copyVoucherCode}>
-        <Text style={{fontSize: 16}}>Verify Code</Text>
-        <Text style={{fontSize: 16}}>{item.verifyCode}</Text>
-      </TouchableOpacity>
+      <View style={{alignSelf: 'center'}}>
+        <TouchableOpacity
+          style={{
+            // this to wrap the width of the content
+            alignSelf: 'baseline',
+            backgroundColor: '#227C70',
+            borderRadius: 8,
+            marginTop: 16,
+            paddingHorizontal: 24,
+            paddingVertical: 16,
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 20,
+              color: '#fff',
+              fontWeight: '600',
+            }}>
+            Take This Request
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -43,6 +55,9 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    marginVertical: 10,
   },
 });
 

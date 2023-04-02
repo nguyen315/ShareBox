@@ -1,15 +1,20 @@
 import {useQuery} from '@tanstack/react-query';
 import React from 'react';
 import {FlatList, SafeAreaView, StyleSheet, Text} from 'react-native';
-import VoucherRequestCard from '../components/voucher-request-card';
+import VoucherCard from '../components/voucher-card';
 import useRefetchOnFocus from '../hooks/useRefetchOnFocus';
 import {tokenSelector} from '../state/auth-slice';
 import {useAppSelector} from '../state/hook';
 
+type VoucherType = {
+  voucher_type: string;
+  value: number;
+};
+
 const HomeScreen: (props: any) => JSX.Element = ({navigation}: any) => {
   const token = useAppSelector(tokenSelector);
 
-  const {isLoading, isFetching, data, refetch} = useQuery({
+  const {isLoading, isFetching, data, refetch} = useQuery<VoucherType[]>({
     queryKey: ['voucher_request'],
     queryFn: () => {
       const data = fetch(`http://localhost:3000/api/v1//voucher_requests`, {
@@ -40,7 +45,7 @@ const HomeScreen: (props: any) => JSX.Element = ({navigation}: any) => {
       <FlatList
         data={data}
         renderItem={({item}) => (
-          <VoucherRequestCard voucherRequest={item} navigation={navigation} />
+          <VoucherCard voucher={item} navigation={navigation} />
         )}
       />
     </SafeAreaView>

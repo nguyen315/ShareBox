@@ -21,10 +21,6 @@ const HomeStack = () => {
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Voucher Detail" component={VoucherDetail} />
-      <Stack.Screen
-        name="Voucher Request Detail"
-        component={VoucherRequestDetail}
-      />
     </Stack.Navigator>
   );
 };
@@ -36,7 +32,6 @@ const MyVoucherStack = () => {
         headerRight: () => <HeaderRight />,
       }}>
       <Stack.Screen name="My Voucher" component={MyVoucherScreen} />
-      <Stack.Screen name="Voucher Detail" component={VoucherDetail} />
       <Stack.Screen
         name="Voucher Request Detail"
         component={VoucherRequestDetail}
@@ -77,7 +72,7 @@ const BottomTabNavigator = () => {
               <MaterialIcons
                 name="home"
                 size={30}
-                color={focused ? '#fff' : ''}
+                color={focused ? '#fff' : '#000'}
               />
 
               <Text style={{color: focused ? '#fff' : '#000'}}>Home</Text>
@@ -93,9 +88,9 @@ const BottomTabNavigator = () => {
             <View
               style={{alignItems: 'center', justifyContent: 'center', top: 12}}>
               <MaterialIcons
-                name="home"
+                name="wallet-membership"
                 size={30}
-                color={focused ? '#fff' : ''}
+                color={focused ? '#fff' : '#000'}
               />
 
               <Text style={{color: focused ? '#fff' : '#000'}}>
@@ -113,7 +108,7 @@ const BottomTabNavigator = () => {
             <View
               style={{alignItems: 'center', justifyContent: 'center', top: 12}}>
               <MaterialIcons
-                name="star-outline"
+                name="queue"
                 size={30}
                 color={focused ? '#fff' : '#000'}
               />
@@ -132,7 +127,7 @@ const BottomTabNavigator = () => {
 const styles = StyleSheet.create({
   tabBar: {
     position: 'absolute',
-    bottom: 24,
+    bottom: 20,
     left: 16,
     right: 16,
     backgroundColor: '#227C70',
