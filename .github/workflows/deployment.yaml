@@ -23,7 +23,7 @@ jobs:
       uses: docker/login-action@v2.1.0
       with:
         registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
+        username: ${{ secrets.USERNAME }}
         password: ${{ secrets.TOKEN }}
 
     - name: Build and push
@@ -31,4 +31,4 @@ jobs:
       with:
         context: ./ShareBoxAPI
         push: true
-        tags: shareboxapi:latest
+        tags: '${{ env.REGISTRY }}/nguyen315/shareboxapi:latest'
