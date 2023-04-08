@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-
   namespace :api do
     namespace :v1 do
       resources :users do
-        get '/voucher_requests', to: 'voucher_requests#get_voucher_requests_by_user'
+        get '/voucher_requests', to: 'voucher_requests#fetch_voucher_requests_by_user'
       end
       resources :vouchers
       resources :voucher_requests
@@ -13,5 +12,4 @@ Rails.application.routes.draw do
       get '/a*', to: 'application#not_found'
     end
   end
-
 end

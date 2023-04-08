@@ -6,7 +6,7 @@ const VoucherCard = ({voucher, navigation}: any) => {
     <TouchableOpacity
       style={{
         alignItems: 'flex-start',
-        backgroundColor: '#dedede',
+        backgroundColor: '#E6E2C3',
         padding: 10,
         margin: 10,
         borderRadius: 10,
