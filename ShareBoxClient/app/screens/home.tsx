@@ -7,6 +7,7 @@ import {tokenSelector} from '../state/auth-slice';
 import {useAppSelector} from '../state/hook';
 
 type VoucherType = {
+  id: string;
   voucher_type: string;
   value: number;
 };
@@ -15,7 +16,7 @@ const HomeScreen: (props: any) => JSX.Element = ({navigation}: any) => {
   const token = useAppSelector(tokenSelector);
 
   const {isLoading, isFetching, data, refetch} = useQuery<VoucherType[]>({
-    queryKey: ['voucher_request'],
+    queryKey: ['voucher_requests'],
     queryFn: () => {
       const data = fetch(`http://localhost:3000/api/v1//voucher_requests`, {
         method: 'GET',

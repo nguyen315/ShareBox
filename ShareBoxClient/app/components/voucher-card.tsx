@@ -11,7 +11,9 @@ const VoucherCard = ({voucher, navigation}: any) => {
         margin: 10,
         borderRadius: 10,
       }}
-      onPress={() => navigation.navigate('Voucher Detail', {voucher})}>
+      onPress={() =>
+        navigation.navigate('Voucher Detail', {voucherId: voucher.id})
+      }>
       <View>
         <Text style={{fontSize: 16}}>Type: {voucher.voucher_type}</Text>
         <Text style={{fontSize: 16}}>Value: {voucher.value}</Text>

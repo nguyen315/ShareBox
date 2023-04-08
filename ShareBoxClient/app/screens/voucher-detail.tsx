@@ -1,20 +1,37 @@
-import React from 'react';
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useAppSelector} from '../state/hook';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import React, {useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {tokenSelector, userSelector} from '../state/auth-slice';
-import {useMutation} from '@tanstack/react-query';
+import {useAppSelector} from '../state/hook';
 
 const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
-  const {voucher} = route.params;
+  const {voucherId} = route.params;
   const user = useAppSelector(userSelector);
   const token = useAppSelector(tokenSelector);
+  const [voucher, setVoucher] = useState<any>({id: voucherId});
 
-  const isOwnRequest = voucher.user_id === user?.id;
+  const {isLoading: isFetchingVoucher} = useQuery({
+    queryFn: () => {
+      return fetch(
+        `http://localhost:3000/api/v1/voucher_requests/${voucherId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        },
+      );
+    },
+    onSuccess: async (response: any) => {
+      const data = await response.json();
+      setVoucher(data.voucher_request);
+    },
+  });
 
   const mutation = useMutation({
     mutationFn: () => {
       return fetch(
-        `http://localhost:3000/api/v1/voucher_requests/${voucher.id}`,
+        `http://localhost:3000/api/v1/voucher_requests/${voucherId}`,
         {
           method: 'PATCH',
           headers: {
@@ -23,11 +40,52 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
         },
       );
     },
+    onSuccess: async response => {
+      const data = await response.json();
+      setVoucher(data.data.voucher_request);
+    },
   });
+
+  const isOwnRequest = voucher.user_id === user?.id;
+  const isHandleRequest = voucher.taken_by_user_id === user?.id;
+  const isRequestHandled = !!voucher.taken_by_user_id;
 
   const handleTakeRequest = () => {
     mutation.mutate();
   };
+
+  if (isFetchingVoucher) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (isHandleRequest) {
+    return (
+      <View style={styles.container}>
+        <View>
+          <View style={[styles.flexRow]}>
+            <Text style={{fontSize: 18}}>Type</Text>
+            <Text style={{fontSize: 18}}>{voucher.voucher_type}</Text>
+          </View>
+          <View style={[styles.flexRow]}>
+            <Text style={{fontSize: 18}}>Value</Text>
+            <Text style={{fontSize: 18}}>{voucher.value}</Text>
+          </View>
+          <View style={[styles.flexRow]}>
+            <Text style={{fontSize: 18}}>Price</Text>
+            <Text style={{fontSize: 18}}>{voucher.value * 0.6}</Text>
+          </View>
+        </View>
+
+        <Text style={{textAlign: 'center', fontSize: 18, color: '#227C70'}}>
+          You are handled this request. Please fill the voucher detail below
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -73,6 +131,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
       ) : (
         <View style={{alignSelf: 'center'}}>
           <TouchableOpacity
+            disabled={mutation.isLoading}
             onPress={handleTakeRequest}
             style={{
               // this to wrap the width of the content
