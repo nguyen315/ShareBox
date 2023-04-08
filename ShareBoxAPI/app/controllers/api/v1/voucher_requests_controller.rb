@@ -23,7 +23,8 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
   def show
     show_params = params.permit(:id).merge(user_id: @user[:id])
     @voucher_request = VoucherRequest.find_by_id(show_params[:id])
-    render json: { voucher_request: @voucher_request }
+    user_own_request = User.find_by_id(@voucher_request[:user_id])
+    render json: { voucher_request: @voucher_request, include: {users: [user_own_request]} }
   end
 
   # PATCH update voucher request
@@ -31,9 +32,11 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
     # custom params because this endpoint do not need voucher_request params
     update_params = params.permit(:id, :value, :voucher_type).merge(user_id: @user[:id])
     user_request_id = update_params[:user_id]
+    user_request = User.find_by_id(user_request_id)
     voucher_id = update_params[:id]
     @voucher_request = VoucherRequest.where(id: voucher_id).update(taken_by_user_id: user_request_id).first
-    render json: { message: 'Success', data: { voucher_request: @voucher_request, include: { users: @user } } },
+    render json: { message: 'Success',
+                   data: { voucher_request: @voucher_request, include: { users: [@user, user_request] } } },
            status: :ok
   end
 

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {tokenSelector, userSelector} from '../state/auth-slice';
+import {User, tokenSelector, userSelector} from '../state/auth-slice';
 import {useAppSelector} from '../state/hook';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Field, Form} from 'react-final-form';
@@ -19,6 +19,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
   const user = useAppSelector(userSelector);
   const token = useAppSelector(tokenSelector);
   const [voucher, setVoucher] = useState<any>({id: voucherId});
+  const [userOwnRequest, setUserOwnRequest] = useState<User>();
 
   const {isLoading: isFetchingVoucher} = useQuery({
     queryKey: ['voucher_request'],
@@ -36,10 +37,11 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
     onSuccess: async (response: any) => {
       const data = await response.json();
       setVoucher(data.voucher_request);
+      setUserOwnRequest(data.include.users[0]);
     },
   });
 
-  const mutation = useMutation({
+  const updateVoucherMutation = useMutation({
     mutationFn: () => {
       return fetch(
         `http://localhost:3000/api/v1/voucher_requests/${voucherId}`,
@@ -52,8 +54,8 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
       );
     },
     onSuccess: async response => {
-      const data = await response.json();
-      setVoucher(data.data.voucher_request);
+      const {data} = await response.json();
+      setVoucher(data.voucher_request);
     },
   });
 
@@ -85,7 +87,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
   const isRequestHandled = !!voucher.taken_by_user_id;
 
   const handleTakeRequest = () => {
-    mutation.mutate();
+    updateVoucherMutation.mutate();
   };
 
   if (isFetchingVoucher) {
@@ -105,6 +107,20 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
     return (
       <View style={styles.container}>
         <View>
+          <View style={[styles.flexRow]}>
+            <Text style={{fontSize: 18}}>Requested by</Text>
+            <Image
+              source={{
+                uri:
+                  userOwnRequest?.avatar ||
+                  'https://gravatar.com/avatar/875eb34b42c43b9fceda6b7eccfa217a?s=400&d=identicon&r=x',
+              }}
+              style={{
+                width: 35,
+                height: 35,
+              }}
+            />
+          </View>
           <View style={[styles.flexRow]}>
             <Text style={{fontSize: 18}}>Type</Text>
             <Text style={{fontSize: 18}}>{voucher.voucher_type}</Text>
@@ -236,7 +252,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
       ) : (
         <View style={{alignSelf: 'center'}}>
           <TouchableOpacity
-            disabled={mutation.isLoading}
+            disabled={updateVoucherMutation.isLoading}
             onPress={handleTakeRequest}
             style={{
               // this to wrap the width of the content
@@ -274,6 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 24,
     marginVertical: 10,
+    alignItems: 'center',
   },
 });
 
