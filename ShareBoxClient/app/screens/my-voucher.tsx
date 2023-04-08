@@ -1,5 +1,11 @@
 import React from 'react';
-import {FlatList, SafeAreaView, StyleSheet, Text} from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+} from 'react-native';
 import {useQuery} from '@tanstack/react-query';
 import VoucherRequestCard from '../components/voucher-request-card';
 import useRefetchOnFocus from '../hooks/useRefetchOnFocus';
@@ -30,8 +36,6 @@ const MyVoucherScreen: (props: any) => JSX.Element = ({navigation}: any) => {
     },
   });
 
-  useRefetchOnFocus(refetch);
-
   if (isLoading || isFetching) {
     return (
       <SafeAreaView style={styles.container}>
@@ -49,6 +53,9 @@ const MyVoucherScreen: (props: any) => JSX.Element = ({navigation}: any) => {
         renderItem={({item}) => (
           <VoucherRequestCard voucherRequest={item} navigation={navigation} />
         )}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
       />
     </SafeAreaView>
   );

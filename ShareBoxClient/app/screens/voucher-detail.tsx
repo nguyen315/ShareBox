@@ -137,7 +137,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
                     </>
                   ) : (
                     <Button
-                      title={'Upload Image'}
+                      title={'Upload Voucher Image'}
                       onPress={async () => {
                         const result = await launchImageLibrary({
                           mediaType: 'photo',
@@ -151,6 +151,17 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
                 }}
               </Field>
 
+              <Field name="voucher_code">
+                {({input}) => {
+                  return (
+                    <Input
+                      label="Voucher Code"
+                      onChangeText={input.onChange}
+                      value={input.value}
+                    />
+                  );
+                }}
+              </Field>
               <View style={{alignSelf: 'center'}}>
                 <TouchableOpacity
                   onPress={handleSubmit}
