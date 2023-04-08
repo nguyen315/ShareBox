@@ -59,14 +59,15 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
     },
   });
 
-  const uploadImage = useMutation({
-    mutationFn: ({imageUri}: any) => {
+  const submitVoucher = useMutation({
+    mutationFn: ({imageUri, voucherCode}: any) => {
       const formData = new FormData();
       formData.append('image', {
         uri: imageUri,
         name: 'image.jpg', // Replace with the actual image file name
         type: 'image/jpeg', // Replace with the actual image file type
       });
+      formData.append('voucher_code', voucherCode);
 
       return fetch(
         `http://localhost:3000/api/v1/voucher_requests/${voucherId}/image`,
@@ -99,8 +100,8 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
   }
 
   const onSubmit = (values: any) => {
-    const {photo} = values;
-    uploadImage.mutate({imageUri: photo});
+    const {photo, voucherCode} = values;
+    submitVoucher.mutate({imageUri: photo, voucherCode});
   };
 
   if (isHandleRequest) {
@@ -109,17 +110,23 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
         <View>
           <View style={[styles.flexRow]}>
             <Text style={{fontSize: 18}}>Requested by</Text>
-            <Image
-              source={{
-                uri:
-                  userOwnRequest?.avatar ||
-                  'https://gravatar.com/avatar/875eb34b42c43b9fceda6b7eccfa217a?s=400&d=identicon&r=x',
-              }}
-              style={{
-                width: 35,
-                height: 35,
-              }}
-            />
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image
+                source={{
+                  uri:
+                    userOwnRequest?.avatar ||
+                    'https://gravatar.com/avatar/875eb34b42c43b9fceda6b7eccfa217a?s=400&d=identicon&r=x',
+                }}
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginRight: 10,
+                }}
+              />
+              <Text style={{fontSize: 18}}>
+                {userOwnRequest?.name || userOwnRequest?.username}
+              </Text>
+            </View>
           </View>
           <View style={[styles.flexRow]}>
             <Text style={{fontSize: 18}}>Type</Text>
@@ -167,7 +174,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
                 }}
               </Field>
 
-              <Field name="voucher_code">
+              <Field name="voucherCode">
                 {({input}) => {
                   return (
                     <Input

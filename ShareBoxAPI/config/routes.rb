@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       end
       resources :vouchers
       resources :voucher_requests do
-        patch '/image', to: 'voucher_requests#upload_image'
+        patch '/voucher', to: 'voucher_requests#submit_voucher'
       end
 
       post '/auth/login', to: 'auth#login'

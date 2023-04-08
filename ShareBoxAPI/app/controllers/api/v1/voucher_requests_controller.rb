@@ -30,19 +30,38 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
   # PATCH update voucher request
   def update
     # custom params because this endpoint do not need voucher_request params
-    update_params = params.permit(:id, :value, :voucher_type).merge(user_id: @user[:id])
+    update_params = params.permit(:voucher_request_id).merge(user_id: @user[:id])
     user_request_id = update_params[:user_id]
     user_request = User.find_by_id(user_request_id)
-    voucher_id = update_params[:id]
-    @voucher_request = VoucherRequest.where(id: voucher_id).update(taken_by_user_id: user_request_id).first
+    voucher_id = update_params[:voucher_request_id]
+    @voucher_request = VoucherRequest
+      .where(id: voucher_id)
+      .update(taken_by_user_id: user_request_id)
+      .first
     render json: { message: 'Success',
                    data: { voucher_request: @voucher_request, include: { users: [@user, user_request] } } },
            status: :ok
   end
 
-  def upload_image
-    image_url = upload_to_cloudinary(params[:image])
+  def submit_voucher
+    voucher_request_id = params[:voucher_request_id]
+    voucher_code = params[:voucher_code]
+    image = params[:image]
+    image_url = upload_to_cloudinary(image)
+
+    @voucher_request = VoucherRequest
+      .where(id: voucher_request_id)
+      .update(voucher_image_url: image_url, voucher_code: voucher_code)
+      .first
+
+    render json: {
+      message: 'Success',
+      data: { voucher_request: @voucher_request }
+    },
+    status: :ok
   end
+
+
 
   def upload_to_cloudinary(image)
     Cloudinary.config do |config|
@@ -55,8 +74,6 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
     # Upload the image to Cloudinary and get the URL
     result = Cloudinary::Uploader.upload(image.tempfile, resource_type: 'auto')
     result['secure_url']
-
-    # Return the Cloudinary URL of the uploaded image
   end
 
   def fetch_voucher_requests_by_user
