@@ -5,7 +5,9 @@ Rails.application.routes.draw do
         get '/voucher_requests', to: 'voucher_requests#fetch_voucher_requests_by_user'
       end
       resources :vouchers
-      resources :voucher_requests
+      resources :voucher_requests do
+        patch '/image', to: 'voucher_requests#upload_image'
+      end
 
       post '/auth/login', to: 'auth#login'
       get '/auth/persist', to: 'auth#persist'

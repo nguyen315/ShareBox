@@ -1,3 +1,7 @@
+require 'cloudinary'
+require 'cloudinary/uploader'
+require 'cloudinary/utils'
+
 class Api::V1::VoucherRequestsController < Api::V1::AuthController
   before_action :authorized
 
@@ -31,6 +35,25 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
     @voucher_request = VoucherRequest.where(id: voucher_id).update(taken_by_user_id: user_request_id).first
     render json: { message: 'Success', data: { voucher_request: @voucher_request, include: { users: @user } } },
            status: :ok
+  end
+
+  def upload_image
+    image_url = upload_to_cloudinary(params[:image])
+  end
+
+  def upload_to_cloudinary(image)
+    Cloudinary.config do |config|
+      config.cloud_name = ENV['CLOUD_NAME']
+      config.api_key = ENV['CLOUD_API_KEY']
+      config.api_secret = ENV['CLOUD_API_SECRET']
+      config.secure = true
+    end
+
+    # Upload the image to Cloudinary and get the URL
+    result = Cloudinary::Uploader.upload(image.tempfile, resource_type: 'auto')
+    result['secure_url']
+
+    # Return the Cloudinary URL of the uploaded image
   end
 
   def fetch_voucher_requests_by_user
