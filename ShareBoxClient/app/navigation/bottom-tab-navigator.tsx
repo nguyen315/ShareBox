@@ -5,10 +5,11 @@ import {StyleSheet, Text, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HeaderRight from '../components/header-right';
 import HomeScreen from '../screens/home';
-import NewVoucherScreen from '../screens/new-voucher';
+import NewVoucherRequestScreen from '../screens/new-voucher-request';
 import VoucherDetail from '../screens/voucher-detail';
 import VoucherRequestDetail from '../screens/voucher-request-detail';
 import MyVoucherScreen from '../screens/my-voucher';
+import NewVoucherTabs from './new-voucher-top-tab-navigator';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -46,7 +47,7 @@ const NewVoucherStack = () => {
       screenOptions={{
         headerRight: () => <HeaderRight />,
       }}>
-      <Stack.Screen name="New Voucher" component={NewVoucherScreen} />
+      <Stack.Screen name="New Voucher Tabs" component={NewVoucherTabs} />
     </Stack.Navigator>
   );
 };
