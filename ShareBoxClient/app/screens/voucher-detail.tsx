@@ -67,7 +67,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
       });
 
       return fetch(
-        `http://localhost:3000/api/v1/voucher_requests/${voucherId}`,
+        `http://localhost:3000/api/v1/voucher_requests/${voucherId}/image`,
         {
           method: 'PATCH',
           headers: {
