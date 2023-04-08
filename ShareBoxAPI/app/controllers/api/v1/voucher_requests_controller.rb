@@ -57,7 +57,7 @@ class Api::V1::VoucherRequestsController < Api::V1::AuthController
   end
 
   def fetch_voucher_requests_by_user
-    user_id = voucher_request_params[:user_id].to_i
+    user_id = params[:user_id].to_i
     if user_id != @user[:id]
       render error: { error: 'unauthorized' }, status: :unauthorized
     else
