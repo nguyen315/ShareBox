@@ -8,7 +8,6 @@ import {
   Text,
 } from 'react-native';
 import VoucherCard from '../components/voucher-card';
-import useRefetchOnFocus from '../hooks/useRefetchOnFocus';
 import {tokenSelector} from '../state/auth-slice';
 import {useAppSelector} from '../state/hook';
 
