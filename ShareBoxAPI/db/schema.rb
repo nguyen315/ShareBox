@@ -44,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_180910) do
     t.index ["user_id"], name: "index_vouchers_on_user_id"
   end
 
+  add_foreign_key "voucher_requests", "users"
   add_foreign_key "voucher_requests", "users", column: "taken_by_user_id"
   add_foreign_key "vouchers", "users"
 end
