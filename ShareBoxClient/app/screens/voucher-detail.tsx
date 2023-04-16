@@ -49,7 +49,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
     },
   });
 
-  const updateVoucherMutation = useMutation({
+  const takeVoucherMutation = useMutation({
     mutationFn: () => {
       return fetch(
         `http://localhost:3000/api/v1/voucher_requests/${voucherId}`,
@@ -251,7 +251,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
   );
 
   const handleTakeRequest = () => {
-    updateVoucherMutation.mutate();
+    takeVoucherMutation.mutate();
   };
 
   const onSubmit = (values: any) => {
@@ -295,6 +295,27 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
     );
   }
 
+  if (isVoucherUploaded) {
+    return (
+      <View style={styles.container}>
+        {renderVoucherOverview()}
+        <Image
+          source={{uri: voucher.voucher_image_url}}
+          style={{
+            width: 200,
+            height: 200,
+            alignSelf: 'center',
+          }}
+        />
+        {isOwnRequest && (
+          <Text style={{textAlign: 'center', fontSize: 18}}>
+            Please pay to the user fulfill your request
+          </Text>
+        )}
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {renderVoucherOverview()}
@@ -326,7 +347,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
       ) : (
         <View style={{alignSelf: 'center'}}>
           <TouchableOpacity
-            disabled={updateVoucherMutation.isLoading}
+            disabled={takeVoucherMutation.isLoading}
             onPress={handleTakeRequest}
             style={{
               // this to wrap the width of the content

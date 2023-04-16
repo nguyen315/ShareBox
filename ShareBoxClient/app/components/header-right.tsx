@@ -15,7 +15,7 @@ const HeaderRight = () => {
       }}>
       <TouchableHighlight
         onPress={() => {
-          navigation.navigate('Profile');
+          navigation.navigate('Setting Stack');
         }}>
         <Image
           source={{
