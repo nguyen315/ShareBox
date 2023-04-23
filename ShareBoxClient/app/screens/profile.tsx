@@ -1,6 +1,7 @@
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {
-  Button,
   Image,
   SafeAreaView,
   ScrollView,
@@ -11,8 +12,6 @@ import {
 } from 'react-native';
 import {logout, userSelector} from '../state/auth-slice';
 import {useAppDispatch, useAppSelector} from '../state/hook';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const ProfileScreen = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +24,10 @@ const ProfileScreen = () => {
 
   const handlePressChangePassword: () => void = () => {
     navigation.navigate('Change Password');
+  };
+
+  const handlePressPayment: () => void = () => {
+    navigation.navigate('Payment');
   };
 
   return (
@@ -56,6 +59,11 @@ const ProfileScreen = () => {
         contentContainerStyle={{alignItems: 'flex-start'}}>
         <TouchableOpacity style={[styles.listItem, styles.borderBottom]}>
           <Text style={{fontSize: 18}}>Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handlePressPayment}
+          style={[styles.listItem, styles.borderBottom]}>
+          <Text style={{fontSize: 18}}>Payment</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handlePressChangePassword}

@@ -10,6 +10,7 @@ import VoucherDetail from '../screens/voucher-detail';
 import VoucherRequestDetail from '../screens/voucher-request-detail';
 import MyVoucherScreen from '../screens/my-voucher';
 import NewVoucherTabs from './new-voucher-top-tab-navigator';
+import BackButton from '../components/commons/back-button';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ const HomeStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerRight: () => <HeaderRight />,
+        headerLeft: () => <BackButton />,
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Voucher Detail" component={VoucherDetail} />
