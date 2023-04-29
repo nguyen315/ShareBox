@@ -42,7 +42,7 @@ const ProfileScreen = () => {
           source={{
             uri:
               user?.avatar ||
-              'https://gravatar.com/avatar/875eb34b42c43b9fceda6b7eccfa217a?s=400&d=identicon&r=x',
+              'https://res.cloudinary.com/nguyen315/image/upload/v1682241471/peluga_xvpwt4.jpg',
           }}
           style={{
             width: 100,
