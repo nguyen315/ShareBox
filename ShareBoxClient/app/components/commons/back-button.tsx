@@ -10,12 +10,13 @@ const BackButton = () => {
   const handleGoBack = () => {
     navigation.goBack();
   };
-  if (canGoBack)
+  if (canGoBack) {
     return (
       <TouchableOpacity onPress={handleGoBack}>
         <MaterialIcons name="arrow-back-ios" size={24} color="black" />
       </TouchableOpacity>
     );
+  }
 
   return null;
 };

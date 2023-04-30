@@ -184,7 +184,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
         <View>
           <Field name="photo">
             {({input}) => {
-              return !!input.value ? (
+              return input.value ? (
                 <>
                   <Image
                     source={{uri: input.value}}
@@ -272,7 +272,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
       <View style={styles.container}>
         {renderVoucherOverview()}
 
-        {!!isVoucherUploaded ? (
+        {isVoucherUploaded ? (
           <>
             <Image
               source={{uri: voucher.voucher_image_url}}

@@ -1,16 +1,36 @@
+import {useMutation} from '@tanstack/react-query';
 import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
 import Input from '../../components/text-input';
-import {useLoginMutation} from '../../services/api';
+import {login} from '../../state/auth-slice';
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loginMutation] = useLoginMutation();
+
+  const loginMutation = useMutation<
+    unknown,
+    unknown,
+    {username: string; password: string}
+  >({
+    mutationFn: userCredential => {
+      return fetch('http://localhost:3000/api/v1/auth/login', {
+        headers: {'Content-Type': 'application/json'},
+        method: 'POST',
+        body: JSON.stringify(userCredential),
+      });
+    },
+    onSuccess: async response => {
+      const data = await response.json();
+      dispatch(login(data));
+    },
+  });
 
   const handlePressLogin = () => {
-    loginMutation({username, password});
+    loginMutation.mutate({username, password});
   };
 
   return (

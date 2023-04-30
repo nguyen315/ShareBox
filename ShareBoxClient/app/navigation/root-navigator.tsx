@@ -14,7 +14,7 @@ const RootNavigator: () => JSX.Element = () => {
   const isLoggedIn = useAppSelector(tokenSelector);
 
   const renderNavigator = () => {
-    if (!!isLoggedIn) {
+    if (isLoggedIn) {
       return (
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home Navigator" component={BottomTabNavigator} />

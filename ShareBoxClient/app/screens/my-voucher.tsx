@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {useQuery} from '@tanstack/react-query';
 import VoucherRequestCard from '../components/voucher-request-card';
-import useRefetchOnFocus from '../hooks/useRefetchOnFocus';
 import {tokenSelector, userSelector} from '../state/auth-slice';
 import {useAppSelector} from '../state/hook';
 
