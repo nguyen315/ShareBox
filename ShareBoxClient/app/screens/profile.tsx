@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {logout, userSelector} from '../state/auth-slice';
+import {removeFromAsyncStorage, userSelector} from '../state/auth-slice';
 import {useAppDispatch, useAppSelector} from '../state/hook';
 
 const ProfileScreen = () => {
@@ -19,7 +19,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   const handlePressLogout: () => void = () => {
-    dispatch(logout());
+    dispatch(removeFromAsyncStorage('auth'));
   };
 
   const handlePressChangePassword: () => void = () => {

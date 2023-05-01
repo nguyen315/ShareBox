@@ -1,15 +1,19 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect} from 'react';
 import SignIn from '../screens/auths/sign-in';
-import {tokenSelector} from '../state/auth-slice';
-import {useAppSelector} from '../state/hook';
+import {getAuthFromAsyncStorage, tokenSelector} from '../state/auth-slice';
+import {useAppDispatch, useAppSelector} from '../state/hook';
 import BottomTabNavigator from './bottom-tab-navigator';
 import SettingStackNavigator from './setting-stack-navigator';
 
 const Stack = createNativeStackNavigator();
 
 const RootNavigator: () => JSX.Element = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAuthFromAsyncStorage());
+  }, [dispatch]);
   // user is logged in if have token
   const isLoggedIn = useAppSelector(tokenSelector);
 

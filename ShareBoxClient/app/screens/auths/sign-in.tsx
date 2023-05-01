@@ -3,12 +3,12 @@ import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Config from 'react-native-config';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
 import Input from '../../components/text-input';
-import {login} from '../../state/auth-slice';
+import {login, writeToAsyncStorage} from '../../state/auth-slice';
+import {useAppDispatch} from '../../state/hook';
 
 const SignIn = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -30,6 +30,7 @@ const SignIn = () => {
     },
     onSuccess: data => {
       dispatch(login(data));
+      dispatch(writeToAsyncStorage({key: 'auth', value: data}));
     },
   });
 
