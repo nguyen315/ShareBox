@@ -1,6 +1,7 @@
 import {useMutation} from '@tanstack/react-query';
 import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
+import Config from 'react-native-config';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import Input from '../../components/text-input';
@@ -12,19 +13,22 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
 
   const loginMutation = useMutation<
-    unknown,
+    {user: object; token: string},
     unknown,
     {username: string; password: string}
   >({
-    mutationFn: userCredential => {
-      return fetch('http://localhost:3000/api/v1/auth/login', {
-        headers: {'Content-Type': 'application/json'},
+    mutationFn: async userCredential => {
+      const response = await fetch(`${Config.API_URL}/api/v1/auth/login`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         method: 'POST',
         body: JSON.stringify(userCredential),
       });
+
+      return await response.json();
     },
-    onSuccess: async response => {
-      const data = await response.json();
+    onSuccess: data => {
       dispatch(login(data));
     },
   });
