@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users do
         get '/voucher_requests', to: 'voucher_requests#fetch_voucher_requests_by_user'
+        resources :payments
       end
       resources :vouchers
       resources :voucher_requests do

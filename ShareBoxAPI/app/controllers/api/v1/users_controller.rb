@@ -1,5 +1,4 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
-
   # GET /users
   def index
     @users = User.all
@@ -16,8 +15,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   def create
     @user = User.create(user_params)
     if @user.valid?
-      token = encode_token({user_id: @user.id})
-      render json: {user: @user, token: token}
+      token = encode_token({ user_id: @user.id })
+      render json: { user: @user, token: token }
     else
       render error: { error: 'Unable to create user' }, status: :bad_request
     end
