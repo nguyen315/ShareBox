@@ -13,6 +13,7 @@ import {useAppSelector} from '../state/hook';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Field, Form} from 'react-final-form';
 import Input from '../components/text-input';
+import Config from 'react-native-config';
 
 const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
   const {voucherId} = route.params;
@@ -25,15 +26,12 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
   const {isLoading: isFetchingVoucher} = useQuery({
     queryKey: ['voucher_request'],
     queryFn: () => {
-      return fetch(
-        `http://localhost:3000/api/v1/voucher_requests/${voucherId}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `bearer ${token}`,
-          },
+      return fetch(`${Config.API_URL}/api/v1/voucher_requests/${voucherId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `bearer ${token}`,
         },
-      );
+      });
     },
     onSuccess: async (response: any) => {
       const data = await response.json();
@@ -51,15 +49,12 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
 
   const takeVoucherMutation = useMutation({
     mutationFn: () => {
-      return fetch(
-        `http://localhost:3000/api/v1/voucher_requests/${voucherId}`,
-        {
-          method: 'PATCH',
-          headers: {
-            Authorization: `bearer ${token}`,
-          },
+      return fetch(`${Config.API_URL}/api/v1/voucher_requests/${voucherId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `bearer ${token}`,
         },
-      );
+      });
     },
     onSuccess: async response => {
       const {data} = await response.json();
@@ -87,7 +82,7 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
       formData.append('voucher_code', voucherCode);
 
       return fetch(
-        `http://localhost:3000/api/v1/voucher_requests/${voucherId}/voucher`,
+        `${Config.API_URL}/api/v1/voucher_requests/${voucherId}/voucher`,
         {
           method: 'PATCH',
           headers: {
@@ -103,7 +98,8 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
   const isOwnRequest = voucher.user_id === user?.id;
   const isHandleRequest = voucher.taken_by_user_id === user?.id;
   const isRequestHandled = !!voucher.taken_by_user_id;
-  const isVoucherUploaded = !!voucher.voucher_image_url;
+  const isVoucherUploaded =
+    !!voucher.voucher_image_url || !!voucher.voucher_code;
 
   // TODO: clean it to another component
   const renderVoucherOverview = () => {
@@ -308,9 +304,19 @@ const VoucherDetail: (props: any) => JSX.Element = ({route}) => {
           }}
         />
         {isOwnRequest && (
-          <Text style={{textAlign: 'center', fontSize: 18}}>
-            Please pay to the user fulfill your request
-          </Text>
+          <View>
+            <Text style={{textAlign: 'center', fontSize: 18}}>
+              Please pay to the user fulfill your request
+            </Text>
+            <View>
+              <Text style={{textAlign: 'center', fontSize: 18}}>
+                {userHandleRequest?.payments[0]?.method}
+              </Text>
+              <Text style={{textAlign: 'center', fontSize: 18}}>
+                {userHandleRequest?.payments[0]?.account_number}
+              </Text>
+            </View>
+          </View>
         )}
       </View>
     );

@@ -40,6 +40,8 @@ export type User = {
   username: string;
   name: string;
   avatar: string;
+  // TODO: add payment type here
+  payments?: any[];
 };
 
 const initialState: {user: User | null; token: string | null} = {
