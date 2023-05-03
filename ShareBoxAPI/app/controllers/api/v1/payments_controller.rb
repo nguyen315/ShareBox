@@ -2,7 +2,7 @@ class Api::V1::PaymentsController < Api::V1::AuthController
   before_action :authorized
 
   def index
-    @payments = Payment.all.order(created_at: :desc)
+    @payments = Payment.where(user_id: @user[:id]).order(created_at: :desc)
     render json: { payments: @payments }
   end
 

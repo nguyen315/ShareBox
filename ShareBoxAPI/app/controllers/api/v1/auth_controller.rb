@@ -5,10 +5,10 @@ class Api::V1::AuthController < Api::V1::ApplicationController
     @user = User.find_by(username: params[:username])
 
     if @user && @user.authenticate(params[:password])
-      token = encode_token({user_id: @user.id})
-      render json: {user: @user, token: token}
+      token = encode_token({ user_id: @user.id })
+      render json: { user: @user, token: token }
     else
-      render json: {error: "Invalid username or password"}, status: :bad_request
+      render json: { error: "Invalid username or password" }, status: :bad_request
     end
   end
 
@@ -22,14 +22,14 @@ class Api::V1::AuthController < Api::V1::ApplicationController
 
   def auth_header
     # { Authorization: 'Bearer <token>' }
-    request.headers['Authorization']
+    request.headers["Authorization"]
   end
 
   def decode_token
     if auth_header
-      token = auth_header.split(' ').last
+      token = auth_header.split(" ").last
       begin
-        JWT.decode(token, ENV["JWT_SECRET"], true, algorithm: 'HS256')
+        JWT.decode(token, ENV["JWT_SECRET"], true, algorithm: "HS256")
       rescue JWT::DecodeError
         nil
       end
@@ -38,7 +38,7 @@ class Api::V1::AuthController < Api::V1::ApplicationController
 
   def logged_in_user
     if decode_token
-      user_id = decode_token[0]['user_id']
+      user_id = decode_token[0]["user_id"]
       @user = User.find_by(id: user_id)
     end
   end
